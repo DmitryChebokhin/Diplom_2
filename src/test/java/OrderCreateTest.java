@@ -3,17 +3,21 @@ import io.restassured.response.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.apache.http.HttpStatus.*;
 
 public class OrderCreateTest {
 
-    String correctIngredients = "{\n\"ingredients\": [\"61c0c5a71d1f82001bdaaa6d\",\"61c0c5a71d1f82001bdaaa6f\"]\n}";
+    String correctIngredients;
     String emptyIngredients = "{\n\"ingredients\": []\n}";
     String wrongIngredients = "{\n\"ingredients\": [\"somerandomletters1\",\"somerandomletters2\"]\n}";
 
-
+    final IngredientsApi ingredientsApi = new IngredientsApi();
     UserSetGet user;
     OrderApi orderClient;
     UserApi userClient;
@@ -24,7 +28,7 @@ public class OrderCreateTest {
         user = UserSetGet.generateUser();
         orderClient = new OrderApi();
         userClient = new UserApi();
-
+        setUpIngredients();
         Response createUserResponse = userClient.createNewUser(user);
         authToken = createUserResponse.path("accessToken");
     }
@@ -82,5 +86,17 @@ public class OrderCreateTest {
     public void CreateOrderWithoutAuthAndWrongIngredientsTest() {
         Response response = orderClient.createOrderWithoutToken(wrongIngredients);
         assertThat("Вернулся код ответа, отличный от ожидаемого 500 internal server error", response.statusCode(), equalTo(SC_INTERNAL_SERVER_ERROR));
+    }
+
+    private void setUpIngredients() {
+        Response ingredientsResponse = ingredientsApi.getIngredientsList();
+        if (Objects.nonNull(ingredientsResponse)) {
+            var ingredientIds = ingredientsResponse.jsonPath().getList("data._id", String.class);
+
+            correctIngredients = String.format("{\n\"ingredients\": %s \n}",
+                    ingredientIds.stream()
+                            .map(id -> "\"" + id + "\"") // оборачиваем каждый id в кавычки
+                            .collect(Collectors.joining(", ", "[", "]"))); // объединяем с разделителем и в квадратных скобках
+        }
     }
 }

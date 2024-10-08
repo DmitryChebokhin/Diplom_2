@@ -4,6 +4,7 @@ public class Constants {
     public static final String USER_CREATE_ENDPOINT = "auth/register";
     public static final String USER_DATA_ENDPOINT = "auth/user";
     public static final String USER_LOGIN_ENDPOINT = "auth/login";
+    public static final String INGREDIENTS_ENDPOINT = "ingredients";
     public static final String INGREDIENTS_MISSING_ERROR_MESSAGE = "Ingredient ids must be provided";
     public static final String WRONG_LOGIN_DATA_ERROR_MESSAGE = "email or password are incorrect";
     public static final String UNAUTHORIZED_ERROR_MESSAGE = "You should be authorised";
