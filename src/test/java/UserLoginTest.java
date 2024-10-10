@@ -17,7 +17,8 @@ public class UserLoginTest {
     public void setUp() {
         user = UserSetGet.generateUser();
         userClient = new UserApi();
-        userClient.createNewUser(user);
+        Response createUserResponse = userClient.createNewUser(user);
+        authToken = createUserResponse.path("accessToken");
     }
 
     @After
@@ -29,7 +30,7 @@ public class UserLoginTest {
 
     @Test
     @DisplayName("Авторизация пользователя с корректными логином и паролем")
-    public void AuthorizeWithCorrectLoginAndPassword() {
+    public void authorizeWithCorrectLoginAndPassword() {
         Response response = userClient.loginUser(user);
         assertThat("Ответ не содержит параметр success со значением true", response.path("success"), equalTo(true));
         assertThat("Ответ не содержит параметр токена авторизации", response.path("accessToken"), notNullValue());
@@ -40,7 +41,7 @@ public class UserLoginTest {
 
     @Test
     @DisplayName("Авторизация пользователя с некорректными логином и паролем")
-    public void AuthorizeWithIncorrectLoginAndPassword() {
+    public void authorizeWithIncorrectLoginAndPassword() {
         user.setEmail(user.getEmail() + "somerandomletters");
         user.setPassword(user.getPassword() + "somerandomletters");
         Response response = userClient.loginUser(user);
@@ -51,7 +52,7 @@ public class UserLoginTest {
 
     @Test
     @DisplayName("Авторизация пользователя с некорректным логином и корректным паролем")
-    public void AuthorizeWithIncorrectLoginAndCorrectPassword() {
+    public void authorizeWithIncorrectLoginAndCorrectPassword() {
         user.setEmail(user.getEmail() + "somerandomletters");
         Response response = userClient.loginUser(user);
         assertThat("Ответ не содержит параметр success со значением false", response.path("success"), equalTo(false));
@@ -61,7 +62,7 @@ public class UserLoginTest {
 
     @Test
     @DisplayName("Авторизация пользователя с корректным логином и некорректным паролем")
-    public void AuthorizeWithCorrectLoginAndIncorrectPassword() {
+    public void authorizeWithCorrectLoginAndIncorrectPassword() {
         user.setPassword(user.getPassword() + "somerandomletters");
         Response response = userClient.loginUser(user);
         assertThat("Ответ не содержит параметр success со значением false", response.path("success"), equalTo(false));

@@ -42,7 +42,7 @@ public class OrderCreateTest {
 
     @Test
     @DisplayName("Создание заказа с авторизацией и списком ингредиентов")
-    public void CreateOrderWithAuthAndWithIngredientsTest() {
+    public void createOrderWithAuthAndWithIngredientsTest() {
         Response response = orderClient.createOrderWithToken(authToken.substring(7), correctIngredients);
         assertThat("Ответ не содержит номер заказа", response.path("order.number"), notNullValue());
         assertThat("Ответ не содержит параметра success со значением true", response.path("success"), equalTo(true));
@@ -50,7 +50,7 @@ public class OrderCreateTest {
 
     @Test
     @DisplayName("Создание заказа без авторизации и со списком ингредиентов")
-    public void CreateOrderWithoutAuthAndWithIngredientsTest() {
+    public void createOrderWithoutAuthAndWithIngredientsTest() {
         Response response = orderClient.createOrderWithoutToken(correctIngredients);
         assertThat("Ответа не содержит номер заказа", response.path("order.number"), notNullValue());
         assertThat("Ответа не содержит параметра success со значением true", response.path("success"), equalTo(true));
@@ -58,7 +58,7 @@ public class OrderCreateTest {
 
     @Test
     @DisplayName("Создание заказа с авторизацией и без списка ингредиентов")
-    public void CreateOrderWithAuthAndWithoutIngredientsTest() {
+    public void createOrderWithAuthAndWithoutIngredientsTest() {
         Response response = orderClient.createOrderWithToken(authToken.substring(7), emptyIngredients);
         assertThat("Вернулся код ответа, отличный от ожидаемого 400 bad request", response.statusCode(), equalTo(SC_BAD_REQUEST));
         assertThat("Ответ не содержит параметра success со значением false", response.path("success"), equalTo(false));
@@ -67,7 +67,7 @@ public class OrderCreateTest {
 
     @Test
     @DisplayName("Создание заказа без авторизации и без списка ингредиентов")
-    public void CreateOrderWithoutAuthAndWithoutIngredientsTest() {
+    public void createOrderWithoutAuthAndWithoutIngredientsTest() {
         Response response = orderClient.createOrderWithoutToken(emptyIngredients);
         assertThat("Вернулся код ответа, отличный от ожидаемого 400 bad request", response.statusCode(), equalTo(SC_BAD_REQUEST));
         assertThat("Ответ не содержит параметра success со значением false", response.path("success"), equalTo(false));
@@ -76,14 +76,14 @@ public class OrderCreateTest {
 
     @Test
     @DisplayName("Создание заказа с авторизацией и с неверным хэшем ингредиентов")
-    public void CreateOrderWithAuthAndWrongIngredientsTest() {
+    public void createOrderWithAuthAndWrongIngredientsTest() {
         Response response = orderClient.createOrderWithToken(authToken.substring(7), wrongIngredients);
         assertThat("Вернулся код ответа, отличный от ожидаемого 500 internal server error", response.statusCode(), equalTo(SC_INTERNAL_SERVER_ERROR));
     }
 
     @Test
     @DisplayName("Создание заказа с авторизацией и с неверным хэшем ингредиентов")
-    public void CreateOrderWithoutAuthAndWrongIngredientsTest() {
+    public void createOrderWithoutAuthAndWrongIngredientsTest() {
         Response response = orderClient.createOrderWithoutToken(wrongIngredients);
         assertThat("Вернулся код ответа, отличный от ожидаемого 500 internal server error", response.statusCode(), equalTo(SC_INTERNAL_SERVER_ERROR));
     }

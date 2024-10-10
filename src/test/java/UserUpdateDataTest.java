@@ -32,7 +32,7 @@ public class UserUpdateDataTest {
 
     @Test
     @DisplayName("Изменение всех данных пользователя с авторизацией")
-    public void ChangeAuthorizedUserData() {
+    public void changeAuthorizedUserData() {
         user.setEmail(user.getEmail() + "somerandomletters");
         user.setPassword(user.getPassword() + "somerandomletters");
         user.setName(user.getName() + "somerandomletters");
@@ -46,7 +46,7 @@ public class UserUpdateDataTest {
 
     @Test
     @DisplayName("Изменение email пользователя с авторизацией")
-    public void ChangeAuthorizedUserEmail() {
+    public void changeAuthorizedUserEmail() {
         user.setEmail(user.getEmail() + "somerandomletters");
         Response response = userClient.changeUserDataWithToken(authToken.substring(7), user);
         assertThat("В ответе отсутствует параметр success со значением true", response.path("success"), equalTo(true));
@@ -56,7 +56,7 @@ public class UserUpdateDataTest {
 
     @Test
     @DisplayName("Изменение пароля пользователя с авторизацией")
-    public void ChangeAuthorizedUserPassword() {
+    public void changeAuthorizedUserPassword() {
         user.setPassword(user.getPassword() + "somerandomletters");
         Response response = userClient.changeUserDataWithToken(authToken.substring(7), user);
         assertThat("В ответе отсутствует параметр success со значением true", response.path("success"), equalTo(true));
@@ -66,7 +66,7 @@ public class UserUpdateDataTest {
 
     @Test
     @DisplayName("Изменение имени пользователя с авторизацией")
-    public void ChangeAuthorizedUserName() {
+    public void changeAuthorizedUserName() {
         user.setName(user.getName() + "somerandomletters");
         Response response = userClient.changeUserDataWithToken(authToken.substring(7), user);
         assertThat("В ответе отсутствует параметр success со значением true", response.path("success"), equalTo(true));
@@ -76,7 +76,7 @@ public class UserUpdateDataTest {
 
     @Test
     @DisplayName("Изменение всех данных пользователя без авторизации")
-    public void ChangeUnauthorizedUserData() {
+    public void changeUnauthorizedUserData() {
         user.setEmail(user.getEmail() + "somerandomletters");
         user.setPassword(user.getPassword() + "somerandomletters");
         user.setName(user.getName() + "somerandomletters");
@@ -88,7 +88,7 @@ public class UserUpdateDataTest {
 
     @Test
     @DisplayName("Изменение email пользователя без авторизации")
-    public void ChangeUnauthorizedUserEmail() {
+    public void changeUnauthorizedUserEmail() {
         user.setEmail(user.getEmail() + "somerandomletters");
         Response response = userClient.changeUserDataWithoutToken(user);
         assertThat("В ответе отсутствует параметр success со значением false", response.path("success"), equalTo(false));
@@ -98,7 +98,7 @@ public class UserUpdateDataTest {
 
     @Test
     @DisplayName("Изменение пароля пользователя без авторизации")
-    public void ChangeUnauthorizedUserPassword() {
+    public void changeUnauthorizedUserPassword() {
         user.setPassword(user.getPassword() + "somerandomletters");
         Response response = userClient.changeUserDataWithoutToken(user);
         assertThat("В ответе отсутствует параметр success со значением false", response.path("success"), equalTo(false));
@@ -108,7 +108,7 @@ public class UserUpdateDataTest {
 
     @Test
     @DisplayName("Изменение имени пользователя без авторизации")
-    public void ChangeUnauthorizedUserName() {
+    public void changeUnauthorizedUserName() {
         user.setName(user.getName() + "somerandomletters");
         Response response = userClient.changeUserDataWithoutToken(user);
         assertThat("В ответе отсутствует параметр success со значением false", response.path("success"), equalTo(false));
@@ -118,7 +118,7 @@ public class UserUpdateDataTest {
 
     @Test
     @DisplayName("Изменение email на уже существующий в системе")
-    public void ChangeEmailOnAlreadyExisting() {
+    public void changeEmailOnAlreadyExisting() {
         UserSetGet userTwo = UserSetGet.generateUser();
         userClient.createNewUser(userTwo);
         user.setEmail(userTwo.getEmail());
